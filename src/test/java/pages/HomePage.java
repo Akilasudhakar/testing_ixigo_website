@@ -326,77 +326,140 @@ public class HomePage extends Base {
 	        wait.until(ExpectedConditions.elementToBeClickable(Locators.frmbtn)).click();
 	        driver.findElement(Locators.fromPlace).sendKeys(bPlace);
 	        Base.sleep();
-	        driver.findElement(Locators.fromPlace).sendKeys(Keys.ENTER); // choose first suggestion
+	        //driver.findElement(Locators.fromPlace).sendKeys(Keys.ENTER); // choose first suggestion
+	        // select the first suggestion explicitly
+	        List<WebElement> results = new WebDriverWait(driver, Duration.ofSeconds(15))
+	                .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath ("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]")));
+	       
+	        if (!results.isEmpty()) {
+	            results.get(0).click();
+	        } else {
+	        	 driver.findElement(Locators.fromPlace).sendKeys(Keys.ARROW_DOWN, Keys.ENTER);
+	        }
 	    }
 
 	    public void enterLandingPlace(String lPlace) {
-	        wait.until(ExpectedConditions.elementToBeClickable(Locators.tobtn)).click();
-	        driver.findElement(Locators.toPlace).sendKeys(lPlace);
+	    	System.out.println(lPlace);
+	        wait.until(ExpectedConditions.elementToBeClickable(Locators.tobtn));
+	        wait.until(ExpectedConditions.elementToBeClickable(Locators.toPlace)).sendKeys(lPlace);
 	        Base.sleep();
-	        driver.findElement(Locators.toPlace).sendKeys(Keys.ENTER); // choose first suggestion
+	        //driver.findElement(Locators.toPlace).sendKeys(Keys.ENTER); // choose first suggestion
+	        // select the first suggestion explicitly/html/body/main/div[2]/div[1]/div[3]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]
+	        List<WebElement> results = new WebDriverWait(driver, Duration.ofSeconds(20))
+	                .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//span[@class='block truncate' and text()='" + lPlace + "']")));
+	        
+	        if (!results.isEmpty()) {
+	            results.get(0).click();
+	        } else {
+	        	driver.findElement(Locators.toPlace).sendKeys(Keys.ARROW_DOWN, Keys.ENTER);
+	        }
 	    }
-	    public static  String[] getMonthYear(String monthYearVal) {
-	    	return monthYearVal.split(" ");
-	    }
-	    
-	    public void bookingDate(String dptdate, String dptmonth, String dptyear, String rtnday, String rtnmonth, String rtnyear) {
-	    	wait.until(ExpectedConditions.elementToBeClickable(Locators.deptbtn)).click();
- 	
-	    	
-	    	String monthYearVal = driver.findElement(Locators.monthYear).getText().trim();
-//	    	System.out.println(dptmonth);
-//	    	System.out.println(dptyear);
-//	    	System.out.println(dptdate);
-//	    	System.out.println(rtnmonth);
-//	    	System.out.println(rtnyear);
-//	    	System.out.println(rtnday);
-//	    	System.out.println(dptmonth.equals(getMonthYear(monthYearVal)[0]));
-//	    	System.out.println(dptyear.equals(getMonthYear(monthYearVal)[1]));
+//	    public static  String[] getMonthYear(String monthYearVal) {
+//	    	return monthYearVal.split(" ");
+//	    }
+//	    
+//	    public void bookingDate(String dptdate, String dptmonth, String dptyear, String rtnday, String rtnmonth, String rtnyear) {
+//	    	wait.until(ExpectedConditions.elementToBeClickable(Locators.deptbtn));
+// 	
 //	    	
-	    	
-	    	while(!(getMonthYear(monthYearVal)[0].equals(dptmonth)
-	    			&&
-	    			getMonthYear(monthYearVal)[1].equals(dptyear))) {
-	    		System.out.println(dptmonth);
-	    		System.out.println(dptyear);
-	    		
-	    		
-	    		 wait.until(ExpectedConditions.elementToBeClickable(Locators.nextbtn)).click();
-	    		monthYearVal = driver.findElement(Locators.monthYear).getText();
-	    		
-	    	}
-	    	try {
-	    		if(dptdate.startsWith("0")) {
-	    			dptdate=dptdate.substring(1);
-	    			
-	    		}
-	    		
-	    		driver.findElement(By.xpath("//p[text()='"+ dptdate +"']")).click();
-	    		
-	    	}catch(Exception e) {
-	    		System.out.println("wrong date: "+ dptmonth + ":"+dptdate);
-	    	}
-	    	
-	    	 monthYearVal = driver.findElement(Locators.monthYear).getText();
-	    	
-	    	while(!(getMonthYear(monthYearVal)[0].equals(rtnmonth)
-	    			&&
-	    			getMonthYear(monthYearVal)[1].equals(rtnyear))) {
-	    		wait.until(ExpectedConditions.elementToBeClickable(Locators.nextbtn)).click();
-	    		monthYearVal = driver.findElement(Locators.monthYear).getText();
-	    	}
-	    	try {
-	    		if(rtnday.startsWith("0")) {
-	    			rtnday=rtnday.substring(1);
-	    			
-	    		}
-	    		driver.findElement(By.xpath("//p[text()='"+ rtnday + "']")).click();
-	    		
-	    	}catch(Exception e) {
-	    		System.out.println("wrong date: "+ rtnmonth + ":"+rtnday);
-	    	}
-	    	
-	    	
-	    }
-	
+//	    	String monthYearVal = driver.findElement(Locators.monthYearBoth).getText().trim();
+////	    	System.out.println(dptmonth);
+////	    	System.out.println(dptyear);
+////	    	System.out.println(dptdate);
+////	    	System.out.println(rtnmonth);
+////	    	System.out.println(rtnyear);
+////	    	System.out.println(rtnday);
+////	    	System.out.println(dptmonth.equals(getMonthYear(monthYearVal)[0]));
+////	    	System.out.println(dptyear.equals(getMonthYear(monthYearVal)[1]));
+////	    	
+//	    	
+//	    	while(!(getMonthYear(monthYearVal)[0].equalsIgnoreCase(dptmonth)
+//	    			&&
+//	    			getMonthYear(monthYearVal)[1].equals(dptyear))) {
+//	    		System.out.println(dptmonth);
+//	    		System.out.println(dptyear);
+//	    		
+//	    		
+//	    		 wait.until(ExpectedConditions.elementToBeClickable(Locators.nextbtn)).click();
+//	    		monthYearVal = driver.findElement(Locators.monthYearBoth).getText();
+//	    		
+//	    	}
+//	    	try {
+//	    		if(dptdate.startsWith("0")) {
+//	    			dptdate=dptdate.substring(1);
+//	    			
+//	    		}
+//	    		
+//	    		driver.findElement(By.xpath("//abbr[@aria-label='" + dptdate + "']")).click();
+//	    		
+//	    	}catch(Exception e) {
+//	    		System.out.println("wrong date: "+ dptmonth + ":"+dptdate);
+//	    	}
+//	    	
+//	    	 monthYearVal = driver.findElement(Locators.monthYearBoth).getText();
+//	    	
+//	    	while(!(getMonthYear(monthYearVal)[0].equalsIgnoreCase(rtnmonth)
+//	    			&&
+//	    			getMonthYear(monthYearVal)[1].equals(rtnyear))) {
+//	    		wait.until(ExpectedConditions.elementToBeClickable(Locators.nextbtn)).click();
+//	    		monthYearVal = driver.findElement(Locators.monthYearBoth).getText();
+//	    	}
+//	    	try {
+//	    		if(rtnday.startsWith("0")) {
+//	    			rtnday=rtnday.substring(1);
+//	    			
+//	    		}
+//	    		driver.findElement(By.xpath("//abbr[@aria-label='" + rtnday + "']")).click();
+//	    		
+//	    	}catch(Exception e) {
+//	    		System.out.println("wrong date: "+ rtnmonth + ":"+rtnday);
+//	    	}
+//	    	
+//	    	
+//	    }
+//	
+		public void selectDateRange(String dptDay, String dptMonth, String dptYear, String rtnDay, String rtnMonth,
+				String rtnYear) {
+
+// ---- Departure ----
+			wait.until(ExpectedConditions.elementToBeClickable(Locators.deptbtn)).click();
+			pickDate(dptDay, dptMonth, dptYear);
+
+// ---- Return ----
+			wait.until(ExpectedConditions.elementToBeClickable(Locators.rtnbtn)).click();
+			pickDate(rtnDay, rtnMonth, rtnYear);
+		}
+
+		private void pickDate(String day, String month, String year) {
+// Read the month-year label
+			String monthYearVal = driver.findElement(Locators.monthYear).getText().trim();
+
+// Navigate until correct month-year
+			while (!(getMonthYear(monthYearVal)[0].equalsIgnoreCase(month)
+					&& getMonthYear(monthYearVal)[1].equals(year))) {
+
+				wait.until(ExpectedConditions.elementToBeClickable(Locators.nextbtn)).click();
+				monthYearVal = driver.findElement(Locators.monthYear).getText().trim();
+			}
+
+// Remove leading zero if needed
+			if (day.startsWith("0")) {
+				day = day.substring(1);
+			}
+
+// Click the date
+			try {
+				WebElement dateElement = driver.findElement(By.xpath("//abbr[@aria-label='" + day + "']"));
+				dateElement.click();
+				System.out.println("Selected: " + day + " " + month + " " + year);
+			} catch (Exception e) {
+				System.out.println("Date not found: " + day + " " + month + " " + year);
+			}
+		}
+
+//Split "September 2025" → ["September", "2025"]
+		private String[] getMonthYear(String monthYear) {
+			return monthYear.split(" ");
+		}
+
 }

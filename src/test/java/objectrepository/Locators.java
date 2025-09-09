@@ -37,11 +37,18 @@ public class Locators {
 	public static By rndTripBtn  = By.xpath("//button[text()='Round Trip']");
 	public static By frmbtn = By.xpath("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[1]/div[1]/div[1]");
 	public static By fromPlace = By.xpath("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[1]/div[1]/div[2]/div/div/div[2]/input");
+	
 	public static By tobtn = By.xpath("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[1]/div[2]");
 	public static By toPlace = By.xpath("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[1]/div[2]/div[2]/div/div/div[2]/input");
 	public static By deptbtn = By.xpath("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[2]/div[1]/div/div");
-	public static By monthYear = By.xpath("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[2]/div[3]/div/div[1]/div[1]/button[2]/span[1]");
-	public static By nextbtn = By.xpath("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[2]/div[3]/div/div[1]/div[1]/button[3]");
+	
+	//html/body/main/div[2]/div[1]/div[3]/div[2]/div[2]/div[3]/div/div[1]/div[1]/button[2]/span[1]
+
+	//public static By monthYear = By.xpath("//span[contains(@class,'react-calendar__navigation__label__labelText--from')]");
+	public static By monthYear = By.xpath("//span[contains(@class,'react-calendar__navigation__label__labelText--from')]");
+
+
+	public static By nextbtn = By.xpath("//button[contains(@class,'react-calendar__navigation__next-button')]");
 	public static By rtnbtn = By.xpath("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[2]/div[2]");
 
 	

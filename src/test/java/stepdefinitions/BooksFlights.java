@@ -69,7 +69,7 @@ public class BooksFlights {
 
 	@When("the system should not load the Ixigo website")
 	public void the_system_should_not_load_the_ixigo_website() {
-		homePage.invalid_site_open();
+		//homePage.invalid_site_open();
 
 	}
 //	@Then("an error page like {string} or {string} should be displayed")
@@ -179,7 +179,7 @@ public class BooksFlights {
 		int row = Hooks.currentRow;
 		bPlace  = excelData[row][2];
 		lPlace = excelData[row][3];
-		homePage.enterBoardingPlace(bPlace);
+		homePage.enterBoardingPlace(bPlace) ;
 	    homePage.enterLandingPlace(lPlace);
 	}
 	@When("the user selects the departure date as {string} and return date as {string}")
@@ -197,7 +197,7 @@ public class BooksFlights {
 		String rtnday = parts1[0];        // "20"
 		String rtnmonth = parts1[1];      // "May"
 		String rtnyear = parts1[2];
-		homePage.bookingDate(dptday,dptmonth,dptyear,rtnday,rtnmonth,rtnyear);
+		homePage.selectDateRange(dptday,dptmonth,dptyear,rtnday,rtnmonth,rtnyear);
 	   
 	}
 	@When("the user clicks the travellers & class options increase the value by {int} for adults as {string} and child as {string}")

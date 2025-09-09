@@ -5,49 +5,47 @@ import org.openqa.selenium.WebDriver;
 
 import java.io.*;
 import java.util.Date;
-import java.util.StringTokenizer;
 
 public class CookieManager {
 
     private static final String COOKIE_FILE = "cookies.data";
 
-    // Save cookies to file
     public static void saveCookies(WebDriver driver) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(COOKIE_FILE))) {
             for (Cookie ck : driver.manage().getCookies()) {
-                writer.write(
-                        ck.getName() + ";" +
+                writer.write(ck.getName() + ";" +
                         ck.getValue() + ";" +
                         ck.getDomain() + ";" +
                         ck.getPath() + ";" +
-                        ck.getExpiry() + ";" +
-                        ck.isSecure()
-                );
+                        (ck.getExpiry() != null ? ck.getExpiry().getTime() : "null") + ";" +
+                        ck.isSecure());
                 writer.newLine();
             }
-            writer.flush();
             System.out.println("✅ Cookies saved successfully!");
         } catch (Exception e) {
             System.err.println("❌ Could not save cookies: " + e.getMessage());
         }
     }
 
-    // Load cookies from file
     public static void loadCookies(WebDriver driver) {
         try (BufferedReader reader = new BufferedReader(new FileReader(COOKIE_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                StringTokenizer token = new StringTokenizer(line, ";");
-                String name = token.nextToken();
-                String value = token.nextToken();
-                String domain = token.nextToken();
-                String path = token.nextToken();
-                String expiry = token.nextToken();
-                boolean isSecure = Boolean.parseBoolean(token.nextToken());
+                String[] token = line.split(";");
+                String name = token[0];
+                String value = token[1];
+                String domain = token[2];
+                String path = token[3];
+                String expiry = token[4];
+                boolean isSecure = Boolean.parseBoolean(token[5]);
 
                 Date expiryDate = null;
                 if (!expiry.equals("null")) {
-                    expiryDate = new Date(expiry);
+                    expiryDate = new Date(Long.parseLong(expiry));
+                    if (expiryDate.before(new Date())) {
+                        System.out.println("⚠️ Found expired cookie for " + name + ", skipping.");
+                        continue;
+                    }
                 }
 
                 Cookie ck = new Cookie.Builder(name, value)
@@ -67,7 +65,6 @@ public class CookieManager {
         }
     }
 
-    // Delete cookie file (reset login)
     public static void resetCookies() {
         File file = new File(COOKIE_FILE);
         if (file.exists() && file.delete()) {
