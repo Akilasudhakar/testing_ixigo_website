@@ -228,5 +228,13 @@ public class BooksFlights {
 	public void the_user_validates_the_search_result_page_has_the_text_filter_and_capture_screen_shot() {
 	    homePage.validatesearchpage();
 	}
+	
+	@When("the user select the special offers as {string} and clicks")
+	public void the_user_select_the_special_offers_as_and_clicks(String studentoffer) {
+		homePage = new HomePage(driver,extTest);
+		int row = Hooks.currentRow;
+		studentoffer = excelData[row][9];
+	    homePage.selectStudentoffer(studentoffer);
+	}
 
 }

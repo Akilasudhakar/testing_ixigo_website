@@ -61,6 +61,8 @@ public class Locators {
 	public static By searchBtn = By.xpath("//button[text()='Search']");
 	
 	//validate search page is navigate or not
-	public static By validateSearchPage = By.xpath(" /html/body/div[3]/div[2]/div[2]/div/div[1]/div/div[1]/div[1]/p");
+	public static By validateSearchPage = By.xpath("/html/body/div[3]/div[2]/div[2]/div/div[1]/div/div[1]/div[1]/p");
+	
+	public static By selectstudentoffer = By.xpath("//span[text()='Student']");
 	
 }

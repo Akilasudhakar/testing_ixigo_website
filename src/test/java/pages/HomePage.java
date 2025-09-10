@@ -458,36 +458,55 @@ public class HomePage extends Base {
 		  }
 		  
 		  public void validatesearchpage() {
-			// driver.findElement(Locators.validateSearchPage).click();
-			 String expResult = "Filters";
-			  String actualResult= driver.findElement(Locators.validateSearchPage).getText();
-			  Base.sleep();
-			  
-			  if(expResult.equals(actualResult)) {
-				 // Reporter.captureScreenshot(driver, actualResult);
-				  
-						String userDir = System.getProperty("user.dir");
+			    String currentUrl = driver.getCurrentUrl();
 
-						// to take time stamp
-						Date date = new Date();
-						SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy_HH_mm_ss"); // yyyy-MM-dd
-						String dateTime = sdf.format(date); // 27-01-2025_16_43_54
-						String fileName = userDir + "\\screenshots\\" + "successfully launched" + "_" + dateTime + ".png";
+			    // Expected condition
+			    String expectedPart = "/flights/search";
 
-						TakesScreenshot scrShot = (TakesScreenshot) driver;
-						File srcFile = scrShot.getScreenshotAs(OutputType.FILE);
-						File destFile = new File(fileName); // fileName System.currentTimeMillis()
-						try {
-							FileUtils.copyFile(srcFile, destFile);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						// TODO Auto-generated catch block
-						
-					}
-				  
+			    if (currentUrl.contains(expectedPart)) {
+			        System.out.println("✅ Successfully navigated to results page. URL: " + currentUrl);
+
+			        // Capture screenshot
+			        String userDir = System.getProperty("user.dir");
+
+			        // timestamp
+			        Date date = new Date();
+			        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy_HH_mm_ss");
+			        String dateTime = sdf.format(date);
+
+			        String fileName = userDir + "\\screenshots\\" + "successfully_launched_" + dateTime + ".png";
+
+			        TakesScreenshot scrShot = (TakesScreenshot) driver;
+			        File srcFile = scrShot.getScreenshotAs(OutputType.FILE);
+			        File destFile = new File(fileName);
+
+			        try {
+			            FileUtils.copyFile(srcFile, destFile);
+			            System.out.println("📸 Screenshot saved: " + fileName);
+			        } catch (IOException e) {
+			            System.out.println("❌ Failed to save screenshot: " + e.getMessage());
+			        }
+
+			    } else {
+			        System.out.println("❌ Still on home page. URL: " + currentUrl);
+			    }
+			}
+		  //applicable for all 3 offers(student,senior citizen,armed officer)
+		  public void selectStudentoffer(String studentoffer)
+		  {
+			    
+				//wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='"+studentoffer+"']"))).click();
+			  if (studentoffer != null && !studentoffer.trim().isEmpty()) {
+			        wait.until(ExpectedConditions
+			            .elementToBeClickable(By.xpath("//span[text()='" + studentoffer + "']")))
+			            .click();
+			        System.out.println(studentoffer);
+			    } else {
+			        System.out.println("⚠ No student offer selected, skipping this step.");
+			    }
 		  }
+		  
+		
 	    
-
+		
 }
