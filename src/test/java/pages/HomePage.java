@@ -1,12 +1,19 @@
 package pages;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -438,7 +445,8 @@ public class HomePage extends Base {
 		  }
 		  
 		  public void donebtn(String businesscls) {
-			  driver.findElement(By.xpath("//span[text()='"+businesscls.toLowerCase()+"']")).click();
+			 // driver.findElement(By.xpath("//span[text()='"+businesscls.toLowerCase()+"']")).click();
+			  driver.findElement(By.xpath("//span[text()='"+businesscls+"']")).click();
 		        Base.sleep();
 		        driver.findElement(Locators.doneBtn).click(); 
 			  
@@ -447,6 +455,38 @@ public class HomePage extends Base {
 		  public void searchbtn() {
 			  driver.findElement(Locators.searchBtn).click();
 			  Base.sleep();
+		  }
+		  
+		  public void validatesearchpage() {
+			// driver.findElement(Locators.validateSearchPage).click();
+			 String expResult = "Filters";
+			  String actualResult= driver.findElement(Locators.validateSearchPage).getText();
+			  Base.sleep();
+			  
+			  if(expResult.equals(actualResult)) {
+				 // Reporter.captureScreenshot(driver, actualResult);
+				  
+						String userDir = System.getProperty("user.dir");
+
+						// to take time stamp
+						Date date = new Date();
+						SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy_HH_mm_ss"); // yyyy-MM-dd
+						String dateTime = sdf.format(date); // 27-01-2025_16_43_54
+						String fileName = userDir + "\\screenshots\\" + "successfully launched" + "_" + dateTime + ".png";
+
+						TakesScreenshot scrShot = (TakesScreenshot) driver;
+						File srcFile = scrShot.getScreenshotAs(OutputType.FILE);
+						File destFile = new File(fileName); // fileName System.currentTimeMillis()
+						try {
+							FileUtils.copyFile(srcFile, destFile);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						// TODO Auto-generated catch block
+						
+					}
+				  
 		  }
 	    
 

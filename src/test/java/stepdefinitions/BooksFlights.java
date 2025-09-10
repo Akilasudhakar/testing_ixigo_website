@@ -214,6 +214,9 @@ public class BooksFlights {
 	}
 	@When("the user select the business class as {string} and clicks done button")
 	public void the_user_select_the_business_class_as_and_clicks_done_button(String businesscls) {
+		homePage = new HomePage(driver,extTest);
+		int row = Hooks.currentRow;
+		businesscls = excelData[row][8];
 		homePage.donebtn(businesscls);
 	}
 	@When("the user clicks on the search flight button")
@@ -223,7 +226,7 @@ public class BooksFlights {
 	}
 	@Then("the user validates the search result page has the text filter and capture screen shot")
 	public void the_user_validates_the_search_result_page_has_the_text_filter_and_capture_screen_shot() {
-	    
+	    homePage.validatesearchpage();
 	}
 
 }
