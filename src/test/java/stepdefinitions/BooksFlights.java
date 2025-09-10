@@ -69,7 +69,7 @@ public class BooksFlights {
 
 	@When("the system should not load the Ixigo website")
 	public void the_system_should_not_load_the_ixigo_website() {
-		//homePage.invalid_site_open();
+		homePage.invalid_site_open();
 
 	}
 //	@Then("an error page like {string} or {string} should be displayed")
@@ -126,14 +126,14 @@ public class BooksFlights {
 
 	@When("the user enters invalid mobile number as {string}")
 	public void the_user_enters_invalid_mobile_number_as(String invalidmobileNumber) {
-//		homePage = new HomePage(driver, extTest);
-//		int row = Hooks.currentRow;
-//		 if (excelData == null) {
-//	            excelData = ExcelReader.readData(); // load Excel data once
-//	        } 
-//		 invalidmobileNumber= excelData[row][1]; 
-//		System.out.println(invalidmobileNumber);
-//		homePage.enterinvalidmobileNumber(invalidmobileNumber) ;
+		homePage = new HomePage(driver, extTest);
+		int row = Hooks.currentRow;
+		 if (excelData == null) {
+	            excelData = ExcelReader.readData(); // load Excel data once
+	        } 
+		 invalidmobileNumber= excelData[row][1]; 
+		System.out.println(invalidmobileNumber);
+		homePage.enterinvalidmobileNumber(invalidmobileNumber) ;
 
 	}
 
@@ -236,5 +236,37 @@ public class BooksFlights {
 		studentoffer = excelData[row][9];
 	    homePage.selectStudentoffer(studentoffer);
 	}
+	
+	 
+	  //apply filters
+	  
+	 @When("the user goes to the filter, scroll down till you see stops enter as {string}  and click on the airlines enter as {string} and click on the departure time as {string}")
+	public void the_user_goes_to_the_filter_scroll_down_till_you_see_stops_enter_as_and_click_on_the_airlines_enter_as_and_click_on_the_departure_time_as(String stops, String airline, String departureTime) {
+		 homePage = new HomePage(driver, extTest);
+		    homePage.closeAddpopup();
+		    int row = Hooks.currentRow;
+			stops = excelData[row][10];
+			
+			airline = excelData[row][11];
+			
+			departureTime = excelData[row][12];
+		    homePage.selectStops(stops);
+		    homePage.selectAirline(airline);
+		    homePage.selectDepartureTime(departureTime);
+	}
+	@When("the user clicks on the first displayed flight")
+	public void the_user_clicks_on_the_first_displayed_flight() {
+	   
+	}
+	@When("the user clicks on the book button")
+	public void the_user_clicks_on_the_book_button() {
+	    
+	}
+	@Then("the user validates the search result page has the offers for you and capture screen shot")
+	public void the_user_validates_the_search_result_page_has_the_offers_for_you_and_capture_screen_shot() {
+	    
+	}
+
+  
 
 }

@@ -65,4 +65,6 @@ public class Locators {
 	
 	public static By selectstudentoffer = By.xpath("//span[text()='Student']");
 	
+	
+	public static By clickxgotitbtn = By.xpath("//*[@id=\"portal-root\"]/div/div[2]/div/button");
 }

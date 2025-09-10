@@ -10,9 +10,9 @@ import java.util.Scanner;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -309,23 +309,23 @@ public class HomePage extends Base {
 	
 	}
 	
-//	public void enterinvalidotp() {
-//		try {
-//		System.out.println("Enter the otp received: ");
-//		invalidotp = sc.next();
-//		WebElement invalidotp_input = wait.until(ExpectedConditions.visibilityOfElementLocated(Locators.clkotp1));
-//		invalidotp_input.click();
-//        invalidotp_input.sendKeys(invalidotp);
-//		driver.findElement(Locators.verifybtn).click();
-//		
-//		Reporter.generateReport(driver,extTest,Status.FAIL,"Invalid otp number is not accepted");
-//		}
-//		catch(TimeoutException te) {
-//			//fail the extent report
-//			Reporter.generateReport(driver,extTest,Status.PASS,"Invalid otp number is acccepted");
-//			//driver.findElement(Locators.closebtn).click();
-//		}
-//	}
+	public void enterinvalidotp() {
+		try {
+		System.out.println("Enter the otp received: ");
+		invalidotp = sc.next();
+		WebElement invalidotp_input = wait.until(ExpectedConditions.visibilityOfElementLocated(Locators.clkotp1));
+		invalidotp_input.click();
+        invalidotp_input.sendKeys(invalidotp);
+		driver.findElement(Locators.verifybtn).click();
+		
+		Reporter.generateReport(driver,extTest,Status.FAIL,"Invalid otp number is not accepted");
+		}
+		catch(TimeoutException te) {
+			//fail the extent report
+			Reporter.generateReport(driver,extTest,Status.PASS,"Invalid otp number is acccepted");
+			//driver.findElement(Locators.closebtn).click();
+		}
+	}
 	
 	
 	
@@ -506,7 +506,106 @@ public class HomePage extends Base {
 			    }
 		  }
 		  
-		
-	    
+		  public void closeAddpopup() {
+//			  try {
+//			        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+//
+//			        // Find all buttons under portal-root
+//			        List<WebElement> buttons = wait.until(
+//			                ExpectedConditions.presenceOfAllElementsLocatedBy(
+//			                        By.xpath("//*[@id='portal-root']//button")
+//			                )
+//			        );
+//
+//			        for (WebElement btn : buttons) {
+//			            if (btn.isDisplayed()) {
+//			                try {
+//			                    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+//			                    System.out.println("✅ Price Lock popup closed");
+//			                    return;
+//			                } catch (Exception e) {
+//			                    System.out.println("⚠️ Could not click popup button: " + e.getMessage());
+//			                }
+//			            }
+//			        }
+//
+//			        System.out.println("ℹ️ No visible button found inside portal-root");
+//
+//			    } catch (TimeoutException e) {
+//			        System.out.println("ℹ️ Price Lock popup not present within wait time, continuing...");
+//			    }
+			  WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5)); // shorter wait
+			    try {
+			        // Wait for the popup button if it exists
+			        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+			                By.xpath("//*[@id='portal-root']//button")
+			        ));
+			        // Optionally click it if needed
+			        //driver.findElement(By.xpath("//*[@id='portal-root']//button")).click();
+			    } catch (Exception e) {
+			        System.out.println("Popup not found, continuing...");
+			    }
+
+			    // Refresh the page after handling popup
+			    driver.navigate().refresh();
+		  }
+		// Utility: Scroll element into view
+		  private void scrollToElement(WebElement element) {
+		      ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
+		      try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} // small pause to stabilize
+		  }
+
+		  // ✅ Select Stops dynamically with scroll
+		  public void selectStops(String stops) {
+		      try {
+		          WebElement stopCheckbox = driver.findElement(
+		              By.xpath("//div[@data-section-id='stops-section']//div[contains(text(),'" + stops + "')]")
+		            		    );
+		          scrollToElement(stopCheckbox);
+		          
+		          ((JavascriptExecutor) driver).executeScript("arguments[0].click();", stopCheckbox);
+		          Base.sleep();
+		          System.out.println("✅ Selected stop: " + stops);
+		      } catch (Exception e) {
+		          System.out.println("⚠️ Could not select stop: " + stops + " - " + e.getMessage());
+		      }
+		  }
+
+		  // ✅ Select Airline dynamically with scroll
+		  public void selectAirline(String airlineCode) {
+		      try {
+		          WebElement airlineCheckbox = driver.findElement(
+		              By.xpath("//div[@data-section-id='airlines-section']//input[@type='checkbox' and @value='"+airlineCode+"']")
+		          );
+		          scrollToElement(airlineCheckbox);
+		          ((JavascriptExecutor) driver).executeScript("arguments[0].click();", airlineCheckbox);
+		          Base.sleep();
+		          System.out.println("✅ Selected airline: " + airlineCode);
+		      } catch (Exception e) {
+		          System.out.println("⚠️ Could not select airline: " + airlineCode + " - " + e.getMessage());
+		      }
+		  }
+
+		  // ✅ Select Departure Time dynamically with scroll
+		  public void selectDepartureTime(String departureTime) {
+		        
+			  try {
+		          WebElement clickDepTime = driver.findElement(
+		              By.xpath("//input[@name='takeOff' and @value='"+departureTime+"']")
+		          );
+		          scrollToElement(clickDepTime);
+		          ((JavascriptExecutor) driver).executeScript("arguments[0].click();", clickDepTime);
+		          Base.sleep();
+		          System.out.println("✅ Selected airline: " + departureTime);
+		      } catch (Exception e) {
+		          System.out.println("⚠️ Could not select airline: " +departureTime + " - " + e.getMessage());
+		      }
+		    }
+		 
 		
 }

@@ -56,8 +56,7 @@ public class Hooks extends Base{
 //
 //		    CookieManager.loadCookies(driver);
 //		    driver.navigate().refresh();
-//
-//		    // ✅ Check login state immediately after refresh
+//	    // ✅ Check login state immediately after refresh
 //		    List<WebElement> greetings = driver.findElements(By.xpath("//*[contains(text(),'Hey')]"));
 //		    if (!greetings.isEmpty()) {
 //		        System.out.println("✅ Logged in using cookies, skipping login flow.");
@@ -69,7 +68,7 @@ public class Hooks extends Base{
 	public void tearDown() {
 		
 		Base.sleep();
-	   // CookieManager.saveCookies(driver);
+	    //CookieManager.saveCookies(driver);
 		//driver.quit();
 		currentRow++;
 		
