@@ -42,15 +42,22 @@ public class Locators {
 	public static By toPlace = By.xpath("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[1]/div[2]/div[2]/div/div/div[2]/input");
 	public static By deptbtn = By.xpath("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[2]/div[1]/div/div");
 	
-	//html/body/main/div[2]/div[1]/div[3]/div[2]/div[2]/div[3]/div/div[1]/div[1]/button[2]/span[1]
-
-	//public static By monthYear = By.xpath("//span[contains(@class,'react-calendar__navigation__label__labelText--from')]");
-	public static By monthYear = By.xpath("//span[contains(@class,'react-calendar__navigation__label__labelText--from')]");
-
+	
+	public static By monthYear = By.xpath("//span[contains(@class,'react-calendar__navigation__label__labelText')]");
 
 	public static By nextbtn = By.xpath("//button[contains(@class,'react-calendar__navigation__next-button')]");
-	public static By rtnbtn = By.xpath("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[2]/div[2]");
+	//public static By rtnbtn = By.xpath("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[2]/div[2]");
 
+	//public static By clickTrvlandCls  = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[2]/div[5]/div/p[1]");
+	public static By adultsPlusBtn = By.xpath("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[3]/div[2]/div/div[1]/div[1]/div[2]/div/button[1]");
+	public static By childPlusbtn = By.xpath("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[3]/div[2]/div/div[1]/div[2]/div[2]/div/button[1]");
+
+	//click business class and done btn
 	
+	public static By doneBtn = By.xpath("//button[text()='Done']");
+	
+	//click search btn
+	
+	public static By searchBtn = By.xpath("//button[text()='Search']");
 	
 }

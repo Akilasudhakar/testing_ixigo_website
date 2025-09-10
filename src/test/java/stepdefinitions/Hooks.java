@@ -69,7 +69,7 @@ public class Hooks extends Base{
 	public void tearDown() {
 		
 		Base.sleep();
-	    CookieManager.saveCookies(driver);
+	   // CookieManager.saveCookies(driver);
 		//driver.quit();
 		currentRow++;
 		

@@ -197,19 +197,28 @@ public class BooksFlights {
 		String rtnday = parts1[0];        // "20"
 		String rtnmonth = parts1[1];      // "May"
 		String rtnyear = parts1[2];
-		homePage.selectDateRange(dptday,dptmonth,dptyear,rtnday,rtnmonth,rtnyear);
+		homePage.bookingDate(dptday,dptmonth,dptyear,rtnday,rtnmonth,rtnyear);
 	   
 	}
-	@When("the user clicks the travellers & class options increase the value by {int} for adults as {string} and child as {string}")
-	public void the_user_clicks_the_travellers_class_options_increase_the_value_by_for_adults_as_and_child_as(Integer int1, String string, String string2) {
-	    
+	@When("the user clicks the travellers & class options increase the value for adults as {string} and child as {string}")
+	public void the_user_clicks_the_travellers_class_options_increase_the_value_for_adults_as_and_child_as(String adultCount, String childCount) {
+	 
+		int row = Hooks.currentRow;
+		//String str = "25";
+		//int num = Integer.parseInt(str);
+		String adultCount1  = excelData[row][6];
+		String childCount1 = excelData[row][7];
+		
+		//homePage.enterBoardingPlace(bPlace);
+		homePage.trvlsandClass(adultCount1,childCount1);
 	}
 	@When("the user select the business class as {string} and clicks done button")
-	public void the_user_select_the_business_class_as_and_clicks_done_button(String string) {
-	    
+	public void the_user_select_the_business_class_as_and_clicks_done_button(String businesscls) {
+		homePage.donebtn(businesscls);
 	}
 	@When("the user clicks on the search flight button")
 	public void the_user_clicks_on_the_search_flight_button() {
+		homePage.searchbtn();
 	    
 	}
 	@Then("the user validates the search result page has the text filter and capture screen shot")
