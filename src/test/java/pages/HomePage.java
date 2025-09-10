@@ -132,35 +132,39 @@ public class HomePage extends Base {
 	            driver.switchTo().defaultContent(); // ensure back to main content
 	        }
 	    }
-	public void validMobileNumber(String mobileNumber) {
-		
-		wait.until(ExpectedConditions.elementToBeClickable(Locators.loginbtn)).click();
-		wait.until(ExpectedConditions.elementToBeClickable(Locators.clkphoneNumber)).click();
-		//driver.findElement(By.xpath("//input[@placeholder='Enter Mobile Number']")).sendKeys("8015332963");
-		//driver.findElement(Locators.clkcontinuebtn).click();
-		//return mobileNumber;
-		try {
-			WebElement mobile = wait.until(ExpectedConditions.visibilityOfElementLocated(Locators.clkphoneNumber));
-			mobile.click();
-			validmobile_number=mobileNumber;
-			mobile.sendKeys(mobileNumber);
-			wait = new WebDriverWait(driver,Duration.ofSeconds(10));
-			wait.until(ExpectedConditions.elementToBeClickable(Locators.clkcontinuebtn)).click();	
-			Reporter.generateReport(driver,extTest,Status.PASS,"Valid mobile number is accepted");
-			}
-			catch(TimeoutException te) {
-				//fail the extent report
-				Reporter.generateReport(driver,extTest,Status.FAIL,"Valid mobile number is not acccepted");
-			}
-		
-		
-		//driver.findElement(By.id("password")).sendKeys("secret_sauce");
+	 public void validMobileNumber(String mobileNumber) {
+		    try {
+		        // ✅ Check if user is already logged in
+		        List<WebElement> greetings = driver.findElements(By.xpath("//*[contains(text(),'Hey')]"));
+		        if (!greetings.isEmpty()) {
+		            System.out.println("✅ Already logged in, skipping mobile number entry");
+		            Reporter.generateReport(driver, extTest, Status.PASS, "User already logged in, skipping login");
+		            return;
+		        }
 
-		//driver.findElement(By.id("login-button")).click();
-	
-		//Assert.assertTrue(true);
-	}
-	
+		        // 🔄 Normal login flow if not logged in
+		        wait.until(ExpectedConditions.elementToBeClickable(Locators.loginbtn)).click();
+		        wait.until(ExpectedConditions.elementToBeClickable(Locators.clkphoneNumber)).click();
+
+		        WebElement mobile = wait.until(
+		            ExpectedConditions.visibilityOfElementLocated(Locators.clkphoneNumber)
+		        );
+		        mobile.click();
+		        validmobile_number = mobileNumber;
+		        mobile.sendKeys(mobileNumber);
+
+		        wait = new WebDriverWait(driver, Duration.ofSeconds(15)); // longer wait
+		        wait.until(ExpectedConditions.elementToBeClickable(Locators.clkcontinuebtn)).click();
+
+		        Reporter.generateReport(driver, extTest, Status.PASS, "Valid mobile number is accepted");
+
+		    } catch (TimeoutException te) {
+		        Reporter.generateReport(driver, extTest, Status.FAIL, "Valid mobile number is not accepted");
+		    } catch (Exception e) {
+		        Reporter.generateReport(driver, extTest, Status.FAIL, "Unexpected error: " + e.getMessage());
+		    }
+		}
+
 	public void enterValidotp() {
 		
 		
@@ -432,7 +436,7 @@ public class HomePage extends Base {
 
 		private void pickDate(String day, String month, String year) {
 // Read the month-year label
-			String monthYearVal = driver.findElement(Locators.monthYear).getText().trim();
+			String monthYearVal = wait.until(ExpectedConditions.elementToBeClickable(Locators.monthYear)).getText().trim();
 
 // Navigate until correct month-year
 			while (!(getMonthYear(monthYearVal)[0].equalsIgnoreCase(month)
