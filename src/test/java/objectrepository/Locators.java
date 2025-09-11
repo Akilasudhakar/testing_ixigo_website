@@ -67,4 +67,9 @@ public class Locators {
 	
 	
 	public static By clickxgotitbtn = By.xpath("//*[@id=\"portal-root\"]/div/div[2]/div/button");
+	
+	public static By bookbtn = By.xpath("//button[text()='Book']");
+	
+	//click continue from review page
+	public static By flightReviewPageContinuebtn = By.xpath("/html/body/div[1]/div[2]/div/div[2]/div/div[2]/div/div[2]/button");
 }

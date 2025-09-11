@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
+
+import java.util.HashMap;
+
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -17,6 +21,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -257,7 +262,7 @@ public class HomePage extends Base {
 	        if (profileIcon.isDisplayed()) {
 	            System.out.println("✅ User successfully logged in! Profile icon visible.");
 	            utils.CookieManager.saveCookies(driver);
-
+	            takeScreenshot("login_success");
 	            // ✅ Step 3 (Optional): Hover to check menu items
 	            try {
 	                org.openqa.selenium.interactions.Actions actions = new org.openqa.selenium.interactions.Actions(driver);
@@ -277,15 +282,37 @@ public class HomePage extends Base {
 
 	        } else {
 	            utils.CookieManager.resetCookies();
+	           
 	            Assert.fail("❌ Login did not persist – profile icon hidden.");
+	        
+	            takeScreenshot("login_failed_hidden_icon");
 	        }
-
+	       
 	    } catch (TimeoutException e) {
 	        utils.CookieManager.resetCookies();
 	        Assert.fail("❌ Login failed – profile icon not found.");
 	    }
 	}
-	
+	public  void takeScreenshot(String name) {
+	    try {
+	        String userDir = System.getProperty("user.dir");
+	        Date date = new Date();
+	        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy_HH_mm_ss");
+	        String dateTime = sdf.format(date);
+
+	        String fileName = userDir + "\\screenshots\\" + name + "_" + dateTime + ".png";
+
+	        TakesScreenshot scrShot = (TakesScreenshot) driver;
+	        File srcFile = scrShot.getScreenshotAs(OutputType.FILE);
+	        File destFile = new File(fileName);
+
+	        FileUtils.copyFile(srcFile, destFile);
+	        System.out.println("📸 Screenshot saved: " + fileName);
+	    } catch (Exception e) {
+	        System.out.println("⚠️ Failed to take screenshot: " + e.getMessage());
+	    }
+	}
+
 	public void enterinvalidmobileNumber(String invalidmobileNumber) {
 		
 			 try {
@@ -458,6 +485,7 @@ public class HomePage extends Base {
 		  }
 		  
 		  public void validatesearchpage() {
+			  try {
 			    String currentUrl = driver.getCurrentUrl();
 
 			    // Expected condition
@@ -490,7 +518,11 @@ public class HomePage extends Base {
 			    } else {
 			        System.out.println("❌ Still on home page. URL: " + currentUrl);
 			    }
+			    Reporter.generateReport(driver, extTest, Status.PASS, "Validated search page successfully");
+			  }catch (TimeoutException te) {
+			        Reporter.generateReport(driver, extTest, Status.FAIL, "Validated search page failure");
 			}
+		  }
 		  //applicable for all 3 offers(student,senior citizen,armed officer)
 		  public void selectStudentoffer(String studentoffer)
 		  {
@@ -507,33 +539,6 @@ public class HomePage extends Base {
 		  }
 		  
 		  public void closeAddpopup() {
-//			  try {
-//			        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-//
-//			        // Find all buttons under portal-root
-//			        List<WebElement> buttons = wait.until(
-//			                ExpectedConditions.presenceOfAllElementsLocatedBy(
-//			                        By.xpath("//*[@id='portal-root']//button")
-//			                )
-//			        );
-//
-//			        for (WebElement btn : buttons) {
-//			            if (btn.isDisplayed()) {
-//			                try {
-//			                    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
-//			                    System.out.println("✅ Price Lock popup closed");
-//			                    return;
-//			                } catch (Exception e) {
-//			                    System.out.println("⚠️ Could not click popup button: " + e.getMessage());
-//			                }
-//			            }
-//			        }
-//
-//			        System.out.println("ℹ️ No visible button found inside portal-root");
-//
-//			    } catch (TimeoutException e) {
-//			        System.out.println("ℹ️ Price Lock popup not present within wait time, continuing...");
-//			    }
 			  WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5)); // shorter wait
 			    try {
 			        // Wait for the popup button if it exists
@@ -559,17 +564,22 @@ public class HomePage extends Base {
 				e.printStackTrace();
 			} // small pause to stabilize
 		  }
+		  
+		  private void actionsClick(WebElement element) {
+			    Actions actions = new Actions(driver);
+			    actions.moveToElement(element).pause(Duration.ofMillis(300)).click().perform();
+			}
 
 		  // ✅ Select Stops dynamically with scroll
 		  public void selectStops(String stops) {
 		      try {
-		          WebElement stopCheckbox = driver.findElement(
-		              By.xpath("//div[@data-section-id='stops-section']//div[contains(text(),'" + stops + "')]")
-		            		    );
+		          WebElement stopCheckbox = wait.until(ExpectedConditions
+				            .elementToBeClickable(
+		              By.xpath("//section[.//p[contains(text(),'Stops')]]//*[contains(text(),'"+stops+"')] ")
+		            		    ));
 		          scrollToElement(stopCheckbox);
-		          
-		          ((JavascriptExecutor) driver).executeScript("arguments[0].click();", stopCheckbox);
-		          Base.sleep();
+		          actionsClick(stopCheckbox);
+
 		          System.out.println("✅ Selected stop: " + stops);
 		      } catch (Exception e) {
 		          System.out.println("⚠️ Could not select stop: " + stops + " - " + e.getMessage());
@@ -577,35 +587,150 @@ public class HomePage extends Base {
 		  }
 
 		  // ✅ Select Airline dynamically with scroll
-		  public void selectAirline(String airlineCode) {
+		  public void selectAirline(String airlineName) {
 		      try {
-		          WebElement airlineCheckbox = driver.findElement(
-		              By.xpath("//div[@data-section-id='airlines-section']//input[@type='checkbox' and @value='"+airlineCode+"']")
-		          );
+		          WebElement airlineCheckbox =  wait.until(ExpectedConditions
+				            .elementToBeClickable(
+		              By.xpath("//section[.//p[contains(text(),'Airlines')]]//*[contains(text(),'"+airlineName+"')]")
+		          ));
 		          scrollToElement(airlineCheckbox);
-		          ((JavascriptExecutor) driver).executeScript("arguments[0].click();", airlineCheckbox);
-		          Base.sleep();
-		          System.out.println("✅ Selected airline: " + airlineCode);
+		          actionsClick(airlineCheckbox);
+		        
+		          System.out.println("✅ Selected airline: " + airlineName);
 		      } catch (Exception e) {
-		          System.out.println("⚠️ Could not select airline: " + airlineCode + " - " + e.getMessage());
+		          System.out.println("⚠️ Could not select airline: " + airlineName+ " - " + e.getMessage());
 		      }
 		  }
 
 		  // ✅ Select Departure Time dynamically with scroll
 		  public void selectDepartureTime(String departureTime) {
 		        
+//			  try {
+//		          WebElement clickDepTime =  wait.until(ExpectedConditions
+//				            .elementToBeClickable(
+//		              By.xpath("//input[@name='takeOff' and @value='"+departureTime+"']")
+//		          ));
+//		          scrollToElement(clickDepTime);
+//		          Actions actions = new Actions(driver);
+//		          actions.moveToElement(clickDepTime).click().perform();
+//		          System.out.println("✅ Selected airline: " + departureTime);
+//		      } catch (Exception e) {
+//		          System.out.println("⚠️ Could not select airline: " +departureTime + " - " + e.getMessage());
+//		      }
 			  try {
-		          WebElement clickDepTime = driver.findElement(
-		              By.xpath("//input[@name='takeOff' and @value='"+departureTime+"']")
-		          );
-		          scrollToElement(clickDepTime);
-		          ((JavascriptExecutor) driver).executeScript("arguments[0].click();", clickDepTime);
-		          Base.sleep();
-		          System.out.println("✅ Selected airline: " + departureTime);
-		      } catch (Exception e) {
-		          System.out.println("⚠️ Could not select airline: " +departureTime + " - " + e.getMessage());
-		      }
-		    }
-		 
-		
+			        // Map logical names to visible text on UI
+			        Map<String, String> timeMap = new HashMap<>();
+			        timeMap.put("EARLY_MORNING", "Before 6AM");
+			        timeMap.put("MORNING", "6AM - 12PM");
+			        timeMap.put("AFTERNOON", "12PM - 6PM");
+			        timeMap.put("EVENING", "After 6PM");
+
+			        String uiText = timeMap.get(departureTime);
+
+			        // Locate by visible text
+			        WebElement clickDepTime = wait.until(ExpectedConditions
+			                .visibilityOfElementLocated(
+			                        By.xpath("//input[@name='takeOff' and @value='"+uiText+"']")
+			                ));
+
+			        // ✅ Force scroll into view with JS
+			        for (int i = 0; i < 3; i++) {
+			            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", clickDepTime);
+			            Thread.sleep(700);
+			            if (clickDepTime.isDisplayed()) break;
+			            ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 300);");
+			        }
+			        try {
+			            // First try Actions click
+			            Actions actions = new Actions(driver);
+			            actions.moveToElement(clickDepTime).click().perform();
+			        } catch (Exception ex) {
+			            // If Actions fails, do JS click
+			            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", clickDepTime);
+			        }
+
+			        System.out.println("✅ Selected departure time: " + uiText);
+
+			    } catch (Exception e) {
+			        System.out.println("⚠️ Could not select departure time: " + departureTime + " - " + e.getMessage());
+			    }
+		  
+		  }
+		  public void selectFirstFlight() {
+			    try {
+			        WebElement firstFlightCard = driver.findElement(
+			            By.xpath("(//div[contains(@class,'shadow-card') and contains(@class,'r-pointer')])[1]")
+			        );
+
+			        ((JavascriptExecutor) driver).executeScript(
+			            "arguments[0].scrollIntoView({block: 'center'});", firstFlightCard
+			        );
+			        Base.sleep();
+
+			        firstFlightCard.click();
+			        System.out.println("✅ First flight clicked successfully!");
+			    } catch (Exception e) {
+			        System.out.println("⚠️ Could not click first flight - " + e.getMessage());
+			    }
+			}
+		  public void clickbook() {
+			  driver.findElement(Locators.bookbtn).click();
+			  Base.sleep();
+		  }
+		  public void validatebookingpage() {
+			  
+			  try {
+			        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+			        // ✅ Wait until booking page heading or Continue button is visible
+			        WebElement bookingHeader = wait.until(ExpectedConditions.visibilityOfElementLocated(
+			            By.xpath("//*[contains(text(),'Review & Traveller Details')]")
+			        ));
+
+			        if (driver.getCurrentUrl().contains("/flight/booking")) {
+			            System.out.println("✅ Successfully navigated to Booking page. URL: " + driver.getCurrentUrl());
+
+			            // Take screenshot with timestamp
+			            String userDir = System.getProperty("user.dir");
+			            Date date = new Date();
+			            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy_HH_mm_ss");
+			            String dateTime = sdf.format(date);
+
+			            String fileName = userDir + "\\screenshots\\" + "booking_page_" + dateTime + ".png";
+
+			            TakesScreenshot scrShot = (TakesScreenshot) driver;
+			            File srcFile = scrShot.getScreenshotAs(OutputType.FILE);
+			            File destFile = new File(fileName);
+
+			            FileUtils.copyFile(srcFile, destFile);
+			            System.out.println(" Screenshot saved: " + fileName);
+
+			        } else {
+			            System.out.println(" Booking page URL not detected, current: " + driver.getCurrentUrl());
+			        }
+			        Reporter.generateReport(driver, extTest, Status.PASS, "Validated search page successfully");
+			  
+			    }
+			  
+			  catch (TimeoutException te) {
+			        Reporter.generateReport(driver, extTest, Status.FAIL, "Validated search page failure");
+			}
+			  catch (Exception e) {
+			        System.out.println(" Could not validate booking page - " + e.getMessage());
+			    }
 }
+
+
+
+		public void clickContinueBtnfromReviewPage() {
+			try {
+				driver.findElement(Locators.flightReviewPageContinuebtn).click();
+				Base.sleep();
+				Reporter.generateReport(driver, extTest, Status.PASS, "Validated search page successfully");
+
+			}
+
+			catch (TimeoutException te) {
+				Reporter.generateReport(driver, extTest, Status.FAIL, "Validated search page failure");
+			}
+		}}

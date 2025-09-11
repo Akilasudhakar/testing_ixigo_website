@@ -127,31 +127,34 @@ public class BooksFlights {
 	@When("the user enters invalid mobile number as {string}")
 	public void the_user_enters_invalid_mobile_number_as(String invalidmobileNumber) {
 		homePage = new HomePage(driver, extTest);
+		homePage.valid_url();
+		homePage.close_notify();
 		int row = Hooks.currentRow;
 		 if (excelData == null) {
 	            excelData = ExcelReader.readData(); // load Excel data once
 	        } 
 		 invalidmobileNumber= excelData[row][1]; 
 		System.out.println(invalidmobileNumber);
+		
 		homePage.enterinvalidmobileNumber(invalidmobileNumber) ;
 
 	}
 
 	@When("the user enters an incorrect OTP")
 	public void the_user_enters_an_incorrect_otp() {
-		// homePage.enterinvalidotp();
+		 homePage.enterinvalidotp();
 
 	}
 
 	@When("the user fails to enter the OTP within the time frame")
 	public void the_user_fails_to_enter_the_otp_within_the_time_frame() {
-		// homePage.enterinvalidotp();
+		homePage.enterinvalidotp();
 
 	}
 
 	@When("the user tries to submit without entering an OTP")
 	public void the_user_tries_to_submit_without_entering_an_otp() {
-		// homePage.enterinvalidotp();
+		 homePage.enterinvalidotp();
 
 	}
 	
@@ -256,15 +259,17 @@ public class BooksFlights {
 	}
 	@When("the user clicks on the first displayed flight")
 	public void the_user_clicks_on_the_first_displayed_flight() {
+		homePage.selectFirstFlight();
 	   
 	}
 	@When("the user clicks on the book button")
 	public void the_user_clicks_on_the_book_button() {
-	    
+	    homePage.clickbook();
 	}
 	@Then("the user validates the search result page has the offers for you and capture screen shot")
 	public void the_user_validates_the_search_result_page_has_the_offers_for_you_and_capture_screen_shot() {
-	    
+	    homePage.validatebookingpage();
+	    homePage.clickContinueBtnfromReviewPage();
 	}
 
   

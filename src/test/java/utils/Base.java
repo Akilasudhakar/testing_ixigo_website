@@ -29,6 +29,7 @@ public class Base {
 		    chromePrefs.put("profile.default_content_setting_values.geolocation", 2);
 			// Initialize ChromeDriver with the configured options
 		    chromeOptions.setExperimentalOption("prefs", chromePrefs);
+		   
 			driver = new ChromeDriver(chromeOptions);
 			driver.manage().window().maximize();
 
