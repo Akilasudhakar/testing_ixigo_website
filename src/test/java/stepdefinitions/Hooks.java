@@ -69,8 +69,8 @@ public class Hooks extends Base{
 		
 		Base.sleep();
 	    CookieManager.saveCookies(driver);
-		driver.quit();
-		currentRow++;
+		//driver.quit();
+		//currentRow++;
 		
 	}
 
