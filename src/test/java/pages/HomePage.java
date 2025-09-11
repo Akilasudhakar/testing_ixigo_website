@@ -145,16 +145,17 @@ public class HomePage extends Base {
 	        }
 	    }
 	 public void validMobileNumber(String mobileNumber) {
-		    try {
-		        // ✅ Check if user is already logged in
-		        List<WebElement> greetings = driver.findElements(By.xpath("//*[contains(text(),'Hey')]"));
-		        if (!greetings.isEmpty()) {
-		            System.out.println("✅ Already logged in, skipping mobile number entry");
-		            Reporter.generateReport(driver, extTest, Status.PASS, "User already logged in, skipping login");
-		            return;
-		        }
+//		    try {
+//		        // ✅ Check if user is already logged in
+//		        List<WebElement> greetings = driver.findElements(By.xpath("//*[contains(text(),'Hey')]"));
+//		        if (!greetings.isEmpty()) {
+//		            System.out.println("✅ Already logged in, skipping mobile number entry");
+//		            Reporter.generateReport(driver, extTest, Status.PASS, "User already logged in, skipping login");
+//		            return;
+//		        }
 
 		        // 🔄 Normal login flow if not logged in
+		 try {
 		        wait.until(ExpectedConditions.elementToBeClickable(Locators.loginbtn)).click();
 		        wait.until(ExpectedConditions.elementToBeClickable(Locators.clkphoneNumber)).click();
 
@@ -172,10 +173,11 @@ public class HomePage extends Base {
 
 		    } catch (TimeoutException te) {
 		        Reporter.generateReport(driver, extTest, Status.FAIL, "Valid mobile number is not accepted");
-		    } catch (Exception e) {
+		    } 
+		        catch (Exception e) {
 		        Reporter.generateReport(driver, extTest, Status.FAIL, "Unexpected error: " + e.getMessage());
 		    }
-		}
+}
 
 	public void enterValidotp() {
 		
@@ -201,11 +203,11 @@ public class HomePage extends Base {
 	            otpInputs.get(i).sendKeys(Character.toString(otp.charAt(i)));
 	        }
 
-	        System.out.println("✅ OTP entered successfully!");
+	        System.out.println("OTP entered successfully!");
 	       
 
 	    } catch (Exception e) {
-	        System.err.println("❌ Error while entering OTP: " + e.getMessage());
+	        System.err.println("Error while entering OTP: " + e.getMessage());
 	       
 	    }
 	    
@@ -242,7 +244,7 @@ public class HomePage extends Base {
 //	        if (loggedIn) {
 //	            System.out.println("✅ User successfully logged in!");
 //	        } else {
-//	            Assert.fail("❌ Login did not persist – still showing Login/Signup");
+//	            Assert.fail("Login did not persist – still showing Login/Signup");
 //	        }
 //
 //	    } catch (TimeoutException e) {
@@ -261,8 +263,8 @@ public class HomePage extends Base {
 	        // ✅ Step 2: Confirm it’s displayed
 	        if (profileIcon.isDisplayed()) {
 	            System.out.println("✅ User successfully logged in! Profile icon visible.");
-	            utils.CookieManager.saveCookies(driver);
-	            takeScreenshot("login_success");
+	            //utils.CookieManager.saveCookies(driver);
+	           
 	            // ✅ Step 3 (Optional): Hover to check menu items
 	            try {
 	                org.openqa.selenium.interactions.Actions actions = new org.openqa.selenium.interactions.Actions(driver);
@@ -281,37 +283,37 @@ public class HomePage extends Base {
 	            }
 
 	        } else {
-	            utils.CookieManager.resetCookies();
+	           // utils.CookieManager.resetCookies();
 	           
 	            Assert.fail("❌ Login did not persist – profile icon hidden.");
 	        
-	            takeScreenshot("login_failed_hidden_icon");
+	          //  takeScreenshot("login_failed_hidden_icon");
 	        }
 	       
 	    } catch (TimeoutException e) {
-	        utils.CookieManager.resetCookies();
+	        //utils.CookieManager.resetCookies();
 	        Assert.fail("❌ Login failed – profile icon not found.");
 	    }
 	}
-	public  void takeScreenshot(String name) {
-	    try {
-	        String userDir = System.getProperty("user.dir");
-	        Date date = new Date();
-	        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy_HH_mm_ss");
-	        String dateTime = sdf.format(date);
-
-	        String fileName = userDir + "\\screenshots\\" + name + "_" + dateTime + ".png";
-
-	        TakesScreenshot scrShot = (TakesScreenshot) driver;
-	        File srcFile = scrShot.getScreenshotAs(OutputType.FILE);
-	        File destFile = new File(fileName);
-
-	        FileUtils.copyFile(srcFile, destFile);
-	        System.out.println("📸 Screenshot saved: " + fileName);
-	    } catch (Exception e) {
-	        System.out.println("⚠️ Failed to take screenshot: " + e.getMessage());
-	    }
-	}
+//	public  void takeScreenshot(String name) {
+//	    try {
+//	        String userDir = System.getProperty("user.dir");
+//	        Date date = new Date();
+//	        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy_HH_mm_ss");
+//	        String dateTime = sdf.format(date);
+//
+//	        String fileName = userDir + "\\screenshots\\" + name + "_" + dateTime + ".png";
+//
+//	        TakesScreenshot scrShot = (TakesScreenshot) driver;
+//	        File srcFile = scrShot.getScreenshotAs(OutputType.FILE);
+//	        File destFile = new File(fileName);
+//
+//	        FileUtils.copyFile(srcFile, destFile);
+//	        System.out.println("📸 Screenshot saved: " + fileName);
+//	    } catch (Exception e) {
+//	        System.out.println("⚠️ Failed to take screenshot: " + e.getMessage());
+//	    }
+//	}
 
 	public void enterinvalidmobileNumber(String invalidmobileNumber) {
 		
@@ -485,7 +487,7 @@ public class HomePage extends Base {
 		  }
 		  
 		  public void validatesearchpage() {
-			  try {
+			 
 			    String currentUrl = driver.getCurrentUrl();
 
 			    // Expected condition
@@ -493,35 +495,18 @@ public class HomePage extends Base {
 
 			    if (currentUrl.contains(expectedPart)) {
 			        System.out.println("✅ Successfully navigated to results page. URL: " + currentUrl);
-
-			        // Capture screenshot
-			        String userDir = System.getProperty("user.dir");
-
-			        // timestamp
-			        Date date = new Date();
-			        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy_HH_mm_ss");
-			        String dateTime = sdf.format(date);
-
-			        String fileName = userDir + "\\screenshots\\" + "successfully_launched_" + dateTime + ".png";
-
-			        TakesScreenshot scrShot = (TakesScreenshot) driver;
-			        File srcFile = scrShot.getScreenshotAs(OutputType.FILE);
-			        File destFile = new File(fileName);
-
-			        try {
-			            FileUtils.copyFile(srcFile, destFile);
-			            System.out.println("📸 Screenshot saved: " + fileName);
-			        } catch (IOException e) {
-			            System.out.println("❌ Failed to save screenshot: " + e.getMessage());
-			        }
-
-			    } else {
-			        System.out.println("❌ Still on home page. URL: " + currentUrl);
-			    }
-			    Reporter.generateReport(driver, extTest, Status.PASS, "Validated search page successfully");
-			  }catch (TimeoutException te) {
+			        Reporter.generateReport(driver, extTest, Status.PASS, "Validated search page successfully");
+			       
+			    } 
+			    
+			    else {
+			        System.out.println("Still on home page. URL: " + currentUrl);
 			        Reporter.generateReport(driver, extTest, Status.FAIL, "Validated search page failure");
-			}
+			    }
+			    
+			 
+			       
+			
 		  }
 		  //applicable for all 3 offers(student,senior citizen,armed officer)
 		  public void selectStudentoffer(String studentoffer)
@@ -689,34 +674,19 @@ public class HomePage extends Base {
 
 			        if (driver.getCurrentUrl().contains("/flight/booking")) {
 			            System.out.println("✅ Successfully navigated to Booking page. URL: " + driver.getCurrentUrl());
+			            Reporter.generateReport(driver, extTest, Status.PASS, "Validated search page successfully");
+			            
 
-			            // Take screenshot with timestamp
-			            String userDir = System.getProperty("user.dir");
-			            Date date = new Date();
-			            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy_HH_mm_ss");
-			            String dateTime = sdf.format(date);
-
-			            String fileName = userDir + "\\screenshots\\" + "booking_page_" + dateTime + ".png";
-
-			            TakesScreenshot scrShot = (TakesScreenshot) driver;
-			            File srcFile = scrShot.getScreenshotAs(OutputType.FILE);
-			            File destFile = new File(fileName);
-
-			            FileUtils.copyFile(srcFile, destFile);
-			            System.out.println(" Screenshot saved: " + fileName);
-
-			        } else {
-			            System.out.println(" Booking page URL not detected, current: " + driver.getCurrentUrl());
 			        }
-			        Reporter.generateReport(driver, extTest, Status.PASS, "Validated search page successfully");
 			  
 			    }
-			  
-			  catch (TimeoutException te) {
-			        Reporter.generateReport(driver, extTest, Status.FAIL, "Validated search page failure");
-			}
+			 
+			        
 			  catch (Exception e) {
+				  System.out.println(" Booking page URL not detected, current: " + driver.getCurrentUrl());
 			        System.out.println(" Could not validate booking page - " + e.getMessage());
+			        Reporter.generateReport(driver, extTest, Status.FAIL, "Validated search page failure");
+					
 			    }
 }
 

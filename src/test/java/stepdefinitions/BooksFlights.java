@@ -34,7 +34,7 @@ public class BooksFlights {
 		homePage = new HomePage(driver, extTest);
 		// Try to load cookies before doing login
 	    driver.get("https://www.ixigo.com/");
-	    utils.CookieManager.loadCookies(driver);
+	   // utils.CookieManager.loadCookies(driver);
 	    driver.navigate().refresh(); // apply loaded cookies
 		homePage.valid_url();
 		homePage.close_notify();
@@ -58,10 +58,10 @@ public class BooksFlights {
 	public void the_user_enters_an_invalid_website_url_in_the_browser() {
 		homePage = new HomePage(driver, extTest);
 		 try {
-		        homePage.close_notify();
-		        homePage.enterValidotp();
+//		        homePage.close_notify();
+		        homePage.invalid_site_open();
 		    } catch (Exception e) {
-		        utils.CookieManager.resetCookies();   // OTP wrong or expired → reset cookies
+		       // utils.CookieManager.resetCookies();   // OTP wrong or expired → reset cookies
 		        throw e;
 		    }
 
@@ -91,9 +91,18 @@ public class BooksFlights {
 		if (excelData == null) {
 			excelData = ExcelReader.readData(); // load Excel data once
 		}
-		mobileNumber = excelData[row][0];
+		//mobileNumber = excelData[row][0];
 
-		homePage.validMobileNumber(mobileNumber);
+		//homePage.validMobileNumber(mobileNumber);
+		if (row < excelData.length && excelData[row].length > 0) {
+	        // safe to access
+	        mobileNumber = excelData[row][0];
+	        homePage.validMobileNumber(mobileNumber);
+	    } else {
+	        throw new IllegalArgumentException(
+	            "Invalid row index: " + row + ". Excel only has " + excelData.length + " rows."
+	        );
+	    }
 
 	}
 
@@ -111,7 +120,7 @@ public class BooksFlights {
 
 	@When("the user submits the OTP within the valid time frame")
 	public void the_user_submits_the_otp_within_the_valid_time_frame() {
-		//homePage.enterValidotp();
+		homePage.enterValidotp();
 
 	}
 
@@ -127,16 +136,27 @@ public class BooksFlights {
 	@When("the user enters invalid mobile number as {string}")
 	public void the_user_enters_invalid_mobile_number_as(String invalidmobileNumber) {
 		homePage = new HomePage(driver, extTest);
-		homePage.valid_url();
+//		homePage.valid_url();
 		homePage.close_notify();
 		int row = Hooks.currentRow;
 		 if (excelData == null) {
 	            excelData = ExcelReader.readData(); // load Excel data once
 	        } 
-		 invalidmobileNumber= excelData[row][1]; 
-		System.out.println(invalidmobileNumber);
+//		 invalidmobileNumber= excelData[row][1]; 
+//		System.out.println(invalidmobileNumber);
+		//homePage.enterinvalidmobileNumber(invalidmobileNumber) ;
+		 if (row < excelData.length && excelData[row].length > 0) {
+		        // safe to access
+			 invalidmobileNumber= excelData[row][1]; 
+			 homePage.enterinvalidmobileNumber(invalidmobileNumber) ;
+			 System.out.println(invalidmobileNumber);
+		    } else {
+		        throw new IllegalArgumentException(
+		            "Invalid row index: " + row + ". Excel only has " + excelData.length + " rows."
+		        );
+		    }
 		
-		homePage.enterinvalidmobileNumber(invalidmobileNumber) ;
+		
 
 	}
 
@@ -174,14 +194,34 @@ public class BooksFlights {
 	}
 	@Given("the user click on the round trip")
 	public void the_user_click_on_the_round_trip() {
+		homePage = new HomePage(driver,extTest);
 		homePage.rndtrip();
 	}
 	@When("the user enter boarding place as {string} and landing place as {string}")
 	public void the_user_enter_boarding_place_as_and_landing_place_as(String bPlace, String lPlace) {
 		homePage = new HomePage(driver,extTest);
 		int row = Hooks.currentRow;
+		
+		if (excelData == null) {
+			excelData = ExcelReader.readData(); // load Excel data once
+		}
+		
+		// Validate row
+		if (row >= excelData.length) {
+		    throw new IllegalArgumentException("Invalid row index: " + row + ". Excel has only " + excelData.length + " rows.");
+		}
+
+		// Validate columns
+		if (excelData[row].length < 4) {
+		    throw new IllegalArgumentException("Row " + row + " does not have enough columns. Expected at least 4, found " + excelData[row].length);
+		}
+
+		
+		homePage.close_notify();
+		
 		bPlace  = excelData[row][2];
 		lPlace = excelData[row][3];
+		
 		homePage.enterBoardingPlace(bPlace) ;
 	    homePage.enterLandingPlace(lPlace);
 	}
@@ -189,6 +229,10 @@ public class BooksFlights {
 	public void the_user_selects_the_departure_date_as_and_return_date_as(String dDate, String rDate) {
 		homePage = new HomePage(driver,extTest);
 		int row = Hooks.currentRow;
+		if (excelData == null) {
+			excelData = ExcelReader.readData(); // load Excel data once
+		}
+		
 		dDate = excelData[row][4];
 		rDate = excelData[row][5];
 		String[] parts = dDate.split(" ");  
@@ -207,6 +251,9 @@ public class BooksFlights {
 	public void the_user_clicks_the_travellers_class_options_increase_the_value_for_adults_as_and_child_as(String adultCount, String childCount) {
 	 
 		int row = Hooks.currentRow;
+		if (excelData == null) {
+			excelData = ExcelReader.readData(); // load Excel data once
+		}
 		//String str = "25";
 		//int num = Integer.parseInt(str);
 		String adultCount1  = excelData[row][6];
@@ -219,6 +266,9 @@ public class BooksFlights {
 	public void the_user_select_the_business_class_as_and_clicks_done_button(String businesscls) {
 		homePage = new HomePage(driver,extTest);
 		int row = Hooks.currentRow;
+		if (excelData == null) {
+			excelData = ExcelReader.readData(); // load Excel data once
+		}
 		businesscls = excelData[row][8];
 		homePage.donebtn(businesscls);
 	}
@@ -248,6 +298,9 @@ public class BooksFlights {
 		 homePage = new HomePage(driver, extTest);
 		    homePage.closeAddpopup();
 		    int row = Hooks.currentRow;
+		    if (excelData == null) {
+				excelData = ExcelReader.readData(); // load Excel data once
+			}
 			stops = excelData[row][10];
 			
 			airline = excelData[row][11];
