@@ -27,9 +27,23 @@ public class Reporter {
 			String screenShotName = captureScreenshot(driver, stepMessage);
 			extTest.log(status, stepMessage, MediaEntityBuilder.createScreenCaptureFromPath(screenShotName).build());
 
-		}
+		
+		try {
+	        if (screenShotName != null) {
+	            extTest.log(status, stepMessage,
+	                    MediaEntityBuilder.createScreenCaptureFromPath(screenShotName).build());
+	        } else {
+	            extTest.log(status, stepMessage + " (No screenshot - driver was null)");
+	        }
+	    } catch (Exception e) {
+	        extTest.log(status, stepMessage + " (Screenshot capture failed: " + e.getMessage() + ")");
+	    }
 	}
+	}
+	
+	
 
+	
 	public static String captureScreenshot(WebDriver driver, String errorMessage) {
 
 		String userDir = System.getProperty("user.dir");

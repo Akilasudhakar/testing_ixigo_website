@@ -1,6 +1,6 @@
 Feature: Search flight as a normal person
 
-Scenario: Enter the basic details without any offers like a normal person
+Scenario: Enter the basic details with armedforces offers 
 
 
 Given the user click on the round trip

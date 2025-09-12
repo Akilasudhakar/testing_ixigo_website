@@ -71,5 +71,6 @@ public class Locators {
 	public static By bookbtn = By.xpath("//button[text()='Book']");
 	
 	//click continue from review page
-	public static By flightReviewPageContinuebtn = By.xpath("/html/body/div[1]/div[2]/div/div[2]/div/div[2]/div/div[2]/button");
+	public static By flightReviewPageContinuebtn = By.xpath("//button[contains(text(),'Continue')]");
+
 }
