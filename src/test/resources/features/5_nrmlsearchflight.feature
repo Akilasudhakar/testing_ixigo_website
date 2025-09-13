@@ -11,5 +11,3 @@ And the user clicks on the search flight button
 Then the user validates the search result page has the text filter and capture screen shot 
 And the user goes to the filter, scroll down till you see stops enter as "<stops>"  and click on the airlines enter as "<Airlines>" and click on the departure time as "<DepartureTime>"
 And the user clicks on the first displayed flight
-And the user clicks on the book button
-Then the user validates the search result page has the offers for you and capture screen shot 

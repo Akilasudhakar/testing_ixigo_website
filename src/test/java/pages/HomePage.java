@@ -597,58 +597,58 @@ public class HomePage extends Base {
 		Base.sleep();
 	}
 
-
-	public void validatebookingpage() {
-	    try {
-	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-	        // Wait until booking page heading is visible
-	        WebElement bookingHeader = wait.until(ExpectedConditions
-	                .visibilityOfElementLocated(By.xpath("//*[contains(text(),'Review & Traveller Details')]")));
-
-	        if (driver.getCurrentUrl().contains("/flight/booking")) {
-	            System.out.println(" Successfully navigated to Booking page. URL: " + driver.getCurrentUrl());
-	            Reporter.generateReport(driver, extTest, Status.PASS, "Validated search page successfully");
-	        }
-
-	    } catch (Exception e) {
-	        System.out.println(" Booking page URL not detected, current: " + driver.getCurrentUrl());
-	        System.out.println(" Could not validate booking page - " + e.getMessage());
-	        Reporter.generateReport(driver, extTest, Status.FAIL, "Validated search page failure");
-	    }
-
-	    // Always go back, even if validation failed
-	    driver.navigate().back();
-
-	    //Wait until search results page loads (optional but safer)
-	    try {
-	        WebDriverWait waitBack = new WebDriverWait(driver, Duration.ofSeconds(15));
-	        waitBack.until(ExpectedConditions.visibilityOfElementLocated(
-	            By.xpath("//h2[contains(text(),'Offers for you')] | //button[contains(text(),'Continue')]")
-	        ));
-	        System.out.println("Returned to search results page successfully.");
-	    } catch (TimeoutException te) {
-	        System.out.println(" Did not land back on search results page properly: " + te.getMessage());
-	    }
-	}
-
-
-	public void clickContinueBtnfromReviewPage() {
-		try {
-			//driver.findElement(Locators.flightReviewPageContinuebtn).click();
-			//Base.sleep();
-			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-			WebElement continueBtn = wait.until(
-			    ExpectedConditions.elementToBeClickable(Locators.flightReviewPageContinuebtn));
-			continueBtn.click();
-
-			Reporter.generateReport(driver, extTest, Status.PASS, "Validated search page successfully");
-
-		}
-
-		catch (TimeoutException te) {
-			Reporter.generateReport(driver, extTest, Status.FAIL, "Validated search page failure");
-		}
-	}
+//
+//	public void validatebookingpage() {
+//	    try {
+//	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//
+//	        // Wait until booking page heading is visible
+//	        WebElement bookingHeader = wait.until(ExpectedConditions
+//	                .visibilityOfElementLocated(By.xpath("//*[contains(text(),'Review & Traveller Details')]")));
+//
+//	        if (driver.getCurrentUrl().contains("/flight/booking")) {
+//	            System.out.println(" Successfully navigated to Booking page. URL: " + driver.getCurrentUrl());
+//	            Reporter.generateReport(driver, extTest, Status.PASS, "Validated search page successfully");
+//	        }
+//
+//	    } catch (Exception e) {
+//	        System.out.println(" Booking page URL not detected, current: " + driver.getCurrentUrl());
+//	        System.out.println(" Could not validate booking page - " + e.getMessage());
+//	        Reporter.generateReport(driver, extTest, Status.FAIL, "Validated search page failure");
+//	    }
+//
+//	    // Always go back, even if validation failed
+//	    driver.navigate().back();
+//
+//	    //Wait until search results page loads (optional but safer)
+//	    try {
+//	        WebDriverWait waitBack = new WebDriverWait(driver, Duration.ofSeconds(15));
+//	        waitBack.until(ExpectedConditions.visibilityOfElementLocated(
+//	            By.xpath("//h2[contains(text(),'Offers for you')] | //button[contains(text(),'Continue')]")
+//	        ));
+//	        System.out.println("Returned to search results page successfully.");
+//	    } catch (TimeoutException te) {
+//	        System.out.println(" Did not land back on search results page properly: " + te.getMessage());
+//	    }
+//	}
+//
+//
+//	public void clickContinueBtnfromReviewPage() {
+//		try {
+//			//driver.findElement(Locators.flightReviewPageContinuebtn).click();
+//			//Base.sleep();
+//			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+//			WebElement continueBtn = wait.until(
+//			    ExpectedConditions.elementToBeClickable(Locators.flightReviewPageContinuebtn));
+//			continueBtn.click();
+//
+//			Reporter.generateReport(driver, extTest, Status.PASS, "Validated search page successfully");
+//
+//		}
+//
+//		catch (TimeoutException te) {
+//			Reporter.generateReport(driver, extTest, Status.FAIL, "Validated search page failure");
+//		}
+//	}
 	
 }

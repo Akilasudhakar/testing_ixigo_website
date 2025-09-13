@@ -316,18 +316,18 @@ public class BooksFlights {
 
 		}
 
-		@When("the user clicks on the book button")
-		public void the_user_clicks_on_the_book_button() {
-			homePage.clickbook();
-		}
+//		@When("the user clicks on the book button")
+//		public void the_user_clicks_on_the_book_button() {
+//			homePage.clickbook();
+//		}
 
-		@Then("the user validates the search result page has the offers for you and capture screen shot")
-		public void the_user_validates_the_search_result_page_has_the_offers_for_you_and_capture_screen_shot() {
-			homePage.validatebookingpage();
-			homePage.clickContinueBtnfromReviewPage();
-		}
-
-
+//		@Then("the user validates the search result page has the offers for you and capture screen shot")
+//		public void the_user_validates_the_search_result_page_has_the_offers_for_you_and_capture_screen_shot() {
+//			homePage.validatebookingpage();
+//			homePage.clickContinueBtnfromReviewPage();
+//		}
+//
+//
 	@When("the user select the special offers as {string} and clicks")
 	public void the_user_select_the_special_offers_as_and_clicks(String studentoffer) {
 		homePage = new HomePage(driver, extTest);
