@@ -41,7 +41,7 @@ public class Hooks extends Base {
 //	    } else {
 //	        extTest.pass("✅ Scenario passed: " + scenario.getName());
 //	    }
-		Base.sleep();
+		//Base.sleep();
 		// driver.quit();
 
 		// Move to next row after each scenario

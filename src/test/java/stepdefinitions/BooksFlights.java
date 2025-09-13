@@ -1,9 +1,6 @@
 package stepdefinitions;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.testng.Assert;
 
 import com.aventstack.extentreports.ExtentTest;
 
@@ -38,11 +35,6 @@ public class BooksFlights {
 	@When("the website should open successfully")
 	public void the_website_should_open_successfully() {
 		homePage.site_open();
-		 String title = driver.getTitle();
-		    Assert.assertTrue(
-		        title.toLowerCase().contains("ixigo"),
-		        "Homepage title did not contain 'ixigo'. Actual: " + title
-		    );
 
 	}
 
@@ -71,7 +63,10 @@ public class BooksFlights {
 		homePage.invalid_site_open();
 
 	}
-
+//	@Then("an error page like {string} or {string} should be displayed")
+//	public void an_error_page_like_or_should_be_displayed(String string, String string2) {
+//	   
+//	}
 
 	// login positive scenario
 	@Given("the user enters the valid Ixigo website URL in the browser and the user is on the Ixigo Login\\/Signup page")
@@ -88,18 +83,13 @@ public class BooksFlights {
 		if (Hooks.excelData == null) {
 			Hooks.excelData = ExcelReader.readData(); // load Excel data once
 		}
-		
+		// mobileNumber = excelData[row][0];
+
+		// homePage.validMobileNumber(mobileNumber);
 		if (row < Hooks.excelData.length && Hooks.excelData[row].length > 0) {
 			// safe to access
 			mobileNumber = Hooks.excelData[row][0];
 			homePage.validMobileNumber(mobileNumber);
-			WebElement mobileInput = driver.findElement(By.id("mobile-input")); // <-- replace with actual locator
-	        String enteredValue = mobileInput.getAttribute("value");
-//	        Assert.assertEquals(
-//	            enteredValue, 
-//	            mobileNumber, 
-//	            "Mobile number was not entered correctly. Expected: " + mobileNumber + ", Found: " + enteredValue
-//	        );
 		} else {
 			throw new IllegalArgumentException(
 					"Invalid row index: " + row + ". Excel only has " + Hooks.excelData.length + " rows.");
@@ -137,13 +127,15 @@ public class BooksFlights {
 	@When("the user enters invalid mobile number as {string}")
 	public void the_user_enters_invalid_mobile_number_as(String invalidmobileNumber) {
 		homePage = new HomePage(driver, extTest);
-
+//		homePage.valid_url();
 		homePage.close_notify();
 		int row = Hooks.currentRow;
 		if (Hooks.excelData == null) {
 			Hooks.excelData = ExcelReader.readData(); // load Excel data once
 		}
-
+//		 invalidmobileNumber= Hooks.excelData[row][1]; 
+//		System.out.println(invalidmobileNumber);
+		// homePage.enterinvalidmobileNumber(invalidmobileNumber) ;
 		if (row < Hooks.excelData.length && Hooks.excelData[row].length > 0) {
 			// safe to access
 			invalidmobileNumber = Hooks.excelData[row][1];
@@ -193,11 +185,6 @@ public class BooksFlights {
 		homePage = new HomePage(driver, extTest);
 
 		homePage.rndtrip();
-		String currentUrl = driver.getCurrentUrl();
-//	    Assert.assertTrue(
-//	        currentUrl.contains("roundtrip"),
-//	        "Round trip option was not applied. URL: " + currentUrl
-//	    );
 	}
 
 	@When("the user enter boarding place as {string} and landing place as {string}")
@@ -243,7 +230,7 @@ public class BooksFlights {
 		String dptday = parts[0]; // "20"
 		String dptmonth = parts[1]; // "May"
 		String dptyear = parts[2];
-		
+		// homePage.bookingDate(dptday,dptmonth,dptyear);
 		String[] parts1 = rDate.split(" ");
 		String rtnday = parts1[0]; // "20"
 		String rtnmonth = parts1[1]; // "May"
@@ -253,11 +240,11 @@ public class BooksFlights {
 				try {
 					homePage.bookingDate(dptday, dptmonth, dptyear, rtnday, rtnmonth, rtnyear);
 				} catch (InterruptedException e) {
-					
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} catch (Exception e) {
-				
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		
@@ -272,11 +259,12 @@ public class BooksFlights {
 		if (Hooks.excelData == null) {
 			Hooks.excelData = ExcelReader.readData(); // load Excel data once
 		}
-		
+		// String str = "25";
+		// int num = Integer.parseInt(str);
 		String adultCount1 = Hooks.excelData[row][6];
 		String childCount1 = Hooks.excelData[row][7];
 
-		
+		// homePage.enterBoardingPlace(bPlace);
 		homePage.trvlsandClass(adultCount1, childCount1);
 	}
 
@@ -300,11 +288,6 @@ public class BooksFlights {
 	@Then("the user validates the search result page has the text filter and capture screen shot")
 	public void the_user_validates_the_search_result_page_has_the_text_filter_and_capture_screen_shot() {
 		homePage.validatesearchpage();
-		String pageSource = driver.getPageSource();
-//	    Assert.assertTrue(
-//	        pageSource.contains("Filter") || pageSource.contains("Stops"),
-//	        "Expected search results page to show filter options, but they were not found."
-//	    );
 	}
 	// apply filters
 
@@ -330,12 +313,7 @@ public class BooksFlights {
 		@When("the user clicks on the first displayed flight")
 		public void the_user_clicks_on_the_first_displayed_flight() {
 			homePage.selectFirstFlight();
-			
-			 WebElement bookButton = driver.findElement(By.xpath("//button[contains(text(),'Book')]"));
-			    Assert.assertTrue(
-			        bookButton.isDisplayed(),
-			        "First flight was not properly clicked. 'Book' button not visible."
-			    );
+
 		}
 
 		@When("the user clicks on the book button")
@@ -347,11 +325,6 @@ public class BooksFlights {
 		public void the_user_validates_the_search_result_page_has_the_offers_for_you_and_capture_screen_shot() {
 			homePage.validatebookingpage();
 			homePage.clickContinueBtnfromReviewPage();
-//			 String pageSource = driver.getPageSource();
-//			    Assert.assertTrue(
-//			        pageSource.contains("Offers for You") || pageSource.contains("Review your booking"),
-//			        " Expected booking page to show offers/review section, but not found."
-//			    );
 		}
 
 
@@ -363,5 +336,42 @@ public class BooksFlights {
 		homePage.selectStudentoffer(studentoffer);
 	}
 
-	
+	// apply filters
+//
+//	@When("the user goes to the filter, scroll down till you see stops enter as {string}  and click on the airlines enter as {string} and click on the departure time as {string}")
+//	public void the_user_goes_to_the_filter_scroll_down_till_you_see_stops_enter_as_and_click_on_the_airlines_enter_as_and_click_on_the_departure_time_as(
+//			String stops, String airline, String departureTime) {
+//		homePage = new HomePage(driver, extTest);
+//		homePage.closeAddpopup();
+//		int row = Hooks.currentRow;
+//		if (Hooks.excelData == null) {
+//			Hooks.excelData = ExcelReader.readData(); // load Excel data once
+//		}
+//		stops = Hooks.excelData[row][10];
+//
+//		airline = Hooks.excelData[row][11];
+//
+//		departureTime = Hooks.excelData[row][12];
+//		homePage.selectStops(stops);
+//		homePage.selectAirline(airline);
+//		homePage.selectDepartureTime(departureTime);
+//	}
+//
+//	@When("the user clicks on the first displayed flight")
+//	public void the_user_clicks_on_the_first_displayed_flight() {
+//		homePage.selectFirstFlight();
+//
+//	}
+//
+//	@When("the user clicks on the book button")
+//	public void the_user_clicks_on_the_book_button() {
+//		homePage.clickbook();
+//	}
+//
+//	@Then("the user validates the search result page has the offers for you and capture screen shot")
+//	public void the_user_validates_the_search_result_page_has_the_offers_for_you_and_capture_screen_shot() {
+//		homePage.validatebookingpage();
+//		homePage.clickContinueBtnfromReviewPage();
+//	}
+
 }

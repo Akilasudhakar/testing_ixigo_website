@@ -22,10 +22,9 @@ public class Locators {
 	public static By clkotp1 = By.xpath("//*[@id=\"otp\"]/div/div[1]");
 	public static By clkotp2 = By.xpath("//*[@id=\"otp\"]/div/div[2]");
 	public static By clkotp3 = By.xpath("//*[@id=\"otp\"]/div/div[3]");
-			public static By clkotp4 = By.xpath("//*[@id=\"otp\"]/div/div[4]");
-					public static By clkotp5 = By.xpath("//*[@id=\"otp\"]/div/div[5]");
-							public static By clkotp6 = By.xpath("//*[@id=\"otp\"]/div/div[6]");
-	
+	public static By clkotp4 = By.xpath("//*[@id=\"otp\"]/div/div[4]");
+	public static By clkotp5 = By.xpath("//*[@id=\"otp\"]/div/div[5]");
+	public static By clkotp6 = By.xpath("//*[@id=\"otp\"]/div/div[6]");
 	
 	
 	public static By humanicon = By.xpath("/html/body/main/div[1]/div/div[2]/div[2]/div/div[1]/div/img");
@@ -46,9 +45,8 @@ public class Locators {
 	public static By monthYear = By.xpath("//span[contains(@class,'react-calendar__navigation__label__labelText')]");
 
 	public static By nextbtn = By.xpath("//button[contains(@class,'react-calendar__navigation__next-button')]");
-	//public static By rtnbtn = By.xpath("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[2]/div[2]");
-
-	//public static By clickTrvlandCls  = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[2]/div[5]/div/p[1]");
+	
+	
 	public static By adultsPlusBtn = By.xpath("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[3]/div[2]/div/div[1]/div[1]/div[2]/div/button[1]");
 	public static By childPlusbtn = By.xpath("/html/body/main/div[2]/div[1]/div[3]/div[2]/div[3]/div[2]/div/div[1]/div[2]/div[2]/div/button[1]");
 
